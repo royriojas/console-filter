@@ -1,21 +1,54 @@
-var sFormat = require( 'stringformat' );
 var transformTools = require( 'browserify-transform-tools' );
 var path = require( 'path' );
 
 var options = {
   excludeExtensions: [
-    '.json'
+    '.json',
+    '.jsx',
+    '.dot',
+    '.tpl'
   ]
 };
-var customConsole = '\n/*wrapping console start!*/\n var console = require(\'consoleify/console-wrapper\').create("{0}");\n/*wrapping console end!*/\n\n';
 
-module.exports = transformTools.makeStringTransform( 'consoleify', options, function ( content, transformOptions, done ) {
-  var file = transformOptions.file;
+/**
+ * parses a valid regular expression represented as a string into a real Regular Expression
+ * @method parseRegExp
+ * @param regexAsString {String} that represents a valid regular expression
+ * @returns {RegExp}
+ */
 
-  var usesConsole = content.indexOf( 'console' ) > -1;
-  if ( usesConsole && content.indexOf( '/** NO_OVERRIDE_CONSOLE **/' ) === -1 ) {
-    content = sFormat( customConsole, path.basename( file ).replace( /\.js(x)*$/, '' ) ) + content;
+var parseRegExp = function ( regexAsString ) {
+
+  var matches = regexAsString.match( /(\/?)(.+)\1([a-z]*)/i );
+  var flags = matches[ 3 ];
+
+  if ( flags && !/^(?!.*?(.).*?\1)[gmixXsuUAJ]+$/.test( flags ) ) {
+    return new RegExp( regexAsString );
   }
 
-  done( null, content );
+  var expression = matches[ 2 ];
+  return new RegExp( expression, flags );
+};
+
+module.exports = transformTools.makeFalafelTransform( 'console-filter', options, function ( node, transformOptions, done ) {
+  if ( node.type === 'CallExpression' ) {
+    if ( node.callee && node.callee.source().indexOf( 'console.' ) === 0 ) {
+
+      var filter = transformOptions.config.filter;
+
+      var regex = parseRegExp( filter );
+      var source = node.source();
+
+      var matchOnFile = transformOptions.file.match( regex );
+      var matchOnSource = source.match( regex );
+      if ( matchOnSource || matchOnFile ) {
+        require('./console').log( '>>> keeping call to', path.basename( transformOptions.file, '.js' ), source );
+        done();
+        return;
+      }
+
+      node.update( '' );
+    }
+  }
+  done();
 } );

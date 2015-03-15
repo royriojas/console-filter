@@ -1,8 +1,8 @@
-[![NPM Version](http://img.shields.io/npm/v/consoleify.svg?style=flat)](https://npmjs.org/package/consoleify)
-[![Build Status](http://img.shields.io/travis/royriojas/consoleify.svg?style=flat)](https://travis-ci.org/royriojas/consoleify)
+[![NPM Version](http://img.shields.io/npm/v/console-filter.svg?style=flat)](https://npmjs.org/package/console-filter)
+[![Build Status](http://img.shields.io/travis/royriojas/console-filter.svg?style=flat)](https://travis-ci.org/royriojas/console-filter)
 
-# consoleify
-> browserify transform to inject a custom console object that prefix the calls to it with the name of the module itself 
+# console-filter
+> browserify transform to remove calls to console methods that do not match the given filter 
 
 ## Overview
 This transform will turn this: 
@@ -10,7 +10,8 @@ This transform will turn this:
 ```javascript
 //my-module.js
 var someFunc = function () {
-  console.log('hello');
+  console.log('some-value: here', 1);
+  console.log('my-prefix: hello');
 };
 module.exports = someFunc;
 ```
@@ -18,31 +19,36 @@ module.exports = someFunc;
 Into this:
 
 ```javascript
-/*wrapping console start!*/
-var console = require('consoleify/console-wrapper').create("dummy2");
-/*wrapping console end!*/
-
+//my-module.js
 var someFunc = function () {
+
+  console.log('my-prefix: hello');
 };
 module.exports = someFunc;
 ```
-So console methods calls are prefixed by the module where the call was done, for easy tracking/filtering of logs 
+when configured with a filter like `my-prefix`.
+```javascript
+var console-filter = require( 'console-filter' ).configure({
+  filter: 'my-prefix'
+});
 
-the `consoleify/console-wrapper` module is also part of this module
+```
 
 ## Install
 
 ```bash
-npm i --save-dev consoleify
+npm i --save-dev console-filter
 ```
 
 ## Usage
 
 ```
-var consoleify = require( 'consoleify' );
+var console-filter = require( 'console-filter' ).configure({
+  filter: 'my-prefix'
+});
 
 var b = browserify();
 b.add('./my-module');
-b.transform( consoleify );
+b.transform( console-filter );
 b.bundle().pipe(process.stdout);
 ```
