@@ -14,7 +14,9 @@ describe( 'console-filter', function () {
 
     var content = 'var fn = function () {};\nmodule.exports = fn;';
 
-    transformTools.runTransform( transform.configure(), dummyJsFile, {
+    transformTools.runTransform( transform.configure( {
+      filter: 'someMatch'
+    } ), dummyJsFile, {
       content: content
     }, function ( err, transformed ) {
 
@@ -47,4 +49,24 @@ describe( 'console-filter', function () {
     }
     );
   } );
+
+  it( 'should do its magic only if the filter is provided', function ( done ) {
+
+    var dummyJsFile = path.resolve( __dirname, '../testFixtures/testWithConfig/dummy1.js' );
+
+    var content = 'var fn = function () {};\nmodule.exports = fn;\n console.log("some log call");';
+
+    transformTools.runTransform( transform.configure(), dummyJsFile, {
+      content: content
+    }, function ( err, transformed ) {
+
+      if ( !err ) {
+        expect( transformed ).to.be.equal( 'var fn = function () {};\nmodule.exports = fn;\n console.log("some log call");' );
+        done();
+      }
+      throw err;
+    }
+    );
+  } );
+
 } );

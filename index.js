@@ -36,10 +36,18 @@ var parseRegExp = function ( regexAsString ) {
 };
 
 module.exports = transformTools.makeFalafelTransform( 'console-filter', options, function ( node, transformOptions, done ) {
+  var config = transformOptions.config || {};
+  var filter = config.filter;
+
+  if ( !filter ) {
+    done();
+    return;
+  }
+
   if ( node.type === 'CallExpression' ) {
     if ( node.callee && node.callee.source().indexOf( 'console.' ) === 0 ) {
 
-      var filter = transformOptions.config.filter;
+
 
       var regex = parseRegExp( filter );
       var source = node.source();
@@ -47,7 +55,7 @@ module.exports = transformTools.makeFalafelTransform( 'console-filter', options,
       var matchOnFile = transformOptions.file.match( regex );
       var matchOnSource = source.match( regex );
       if ( matchOnSource || matchOnFile ) {
-        require( './console' ).log( '>>> keeping call to', path.basename( transformOptions.file ), source );
+        require( './console' ).log( '>>> keeping call on file:' + path.basename( transformOptions.file ), 'source: ' + source );
         done();
         return;
       }
