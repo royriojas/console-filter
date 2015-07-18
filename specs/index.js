@@ -25,8 +25,7 @@ describe( 'console-filter', function () {
         done();
       }
       throw err;
-    }
-    );
+    } );
   } );
 
   it( 'should remove calls to console.* if they do not match the given filter of calls to keep', function ( done ) {
@@ -46,8 +45,7 @@ describe( 'console-filter', function () {
         done();
       }
       throw err;
-    }
-    );
+    } );
   } );
 
   it( 'should do its magic only if the filter is provided', function ( done ) {
@@ -65,8 +63,7 @@ describe( 'console-filter', function () {
         done();
       }
       throw err;
-    }
-    );
+    } );
   } );
 
 } );
