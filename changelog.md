@@ -1,5 +1,10 @@
 
 # console-filter - Changelog
+## v1.1.2
+- **Cosmetic fixes**
+  - Fix minor code style issue - [1e59fd3]( https://github.com/royriojas/console-filter/commit/1e59fd3 ), [royriojas](https://github.com/royriojas), 17/07/2015 19:28:49
+
+    
 ## v1.1.1
 - **Bug Fixes**
   - prevent the transform from running if the filter option is not provided - [8a3663d]( https://github.com/royriojas/console-filter/commit/8a3663d ), [royriojas](https://github.com/royriojas), 17/07/2015 19:26:11
