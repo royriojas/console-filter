@@ -1,8 +1,8 @@
 describe( 'console-filter', function () {
-  var proxyquire = require('proxyquire');
+  var proxyquire = require( 'proxyquire' );
   var transformTools = require( 'browserify-transform-tools' );
   var transform = proxyquire( '../', {
-    './console' : {
+    './console': {
       log: function () {}
     }
   } );
@@ -33,14 +33,14 @@ describe( 'console-filter', function () {
 
     var content = '"use strict";\nvar fn = function () { \n  console.log("hello world");\n  console.log(\'my-prefix\', \'some other call here\');\n};\nmodule.exports = fn;';
 
-    transformTools.runTransform( transform.configure({
-        filter: 'my-prefix'
-      }), dummyJsFile, {
+    transformTools.runTransform( transform.configure( {
+      filter: 'my-prefix'
+    } ), dummyJsFile, {
       content: content
     }, function ( err, transformed ) {
 
       if ( !err ) {
-        expect( transformed ).to.be.equal( '"use strict";\nvar fn = function () { \n  ;\n  console.log(\'my-prefix\', \'some other call here\');\n};\nmodule.exports = fn;');
+        expect( transformed ).to.be.equal( '"use strict";\nvar fn = function () { \n  void(0);\n  console.log(\'my-prefix\', \'some other call here\');\n};\nmodule.exports = fn;' );
         done();
       }
       throw err;

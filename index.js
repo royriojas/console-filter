@@ -4,9 +4,14 @@ var path = require( 'path' );
 var options = {
   excludeExtensions: [
     '.json',
-    '.jsx',
+    '.less',
     '.dot',
     '.tpl'
+  ],
+  includeExtensions: [
+    '.js',
+    '.jsx',
+    '.es6'
   ]
 };
 
@@ -42,12 +47,12 @@ module.exports = transformTools.makeFalafelTransform( 'console-filter', options,
       var matchOnFile = transformOptions.file.match( regex );
       var matchOnSource = source.match( regex );
       if ( matchOnSource || matchOnFile ) {
-        require('./console').log( '>>> keeping call to', path.basename( transformOptions.file, '.js' ), source );
+        require( './console' ).log( '>>> keeping call to', path.basename( transformOptions.file ), source );
         done();
         return;
       }
 
-      node.update( '' );
+      node.update( 'void(0)' );
     }
   }
   done();
