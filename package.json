@@ -1,6 +1,6 @@
 {
   "name": "console-filter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "browserify transform to remove calls to console methods that do not match the given filter",
   "main": "index.js",
   "scripts": {
