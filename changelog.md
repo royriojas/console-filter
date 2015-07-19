@@ -1,5 +1,10 @@
 
 # console-filter - Changelog
+## v1.1.3
+- **Features**
+  - Add option to exclude certain files from the transformation - [d728008]( https://github.com/royriojas/console-filter/commit/d728008 ), [royriojas](https://github.com/royriojas), 19/07/2015 03:05:07
+
+    
 ## v1.1.2
 - **Cosmetic fixes**
   - Fix minor code style issue - [1e59fd3]( https://github.com/royriojas/console-filter/commit/1e59fd3 ), [royriojas](https://github.com/royriojas), 17/07/2015 19:28:49
