@@ -1,5 +1,10 @@
 
 # console-filter - Changelog
+## v1.1.4
+- **Features**
+  - add keep as an alias to filter for better understanding of the purpose of this module - [22319db]( https://github.com/royriojas/console-filter/commit/22319db ), [royriojas](https://github.com/royriojas), 19/07/2015 03:51:07
+
+    
 ## v1.1.3
 - **Features**
   - Add option to exclude certain files from the transformation - [d728008]( https://github.com/royriojas/console-filter/commit/d728008 ), [royriojas](https://github.com/royriojas), 19/07/2015 03:05:07
