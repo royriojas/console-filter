@@ -1,5 +1,4 @@
 var transformTools = require( 'browserify-transform-tools' );
-var path = require( 'path' );
 
 var options = {
   excludeExtensions: [
@@ -15,27 +14,10 @@ var options = {
   ]
 };
 
-/**
- * parses a valid regular expression represented as a string into a real Regular Expression
- * @method parseRegExp
- * @param regexAsString {String} that represents a valid regular expression
- * @returns {RegExp}
- */
+var transformExclude = require( 'browserify-transform-tools-exclude' );
+var parseRegExp = require( 'browserify-transform-tools-exclude/lib/parse-regex' );
 
-var parseRegExp = function ( regexAsString ) {
-
-  var matches = regexAsString.match( /(\/?)(.+)\1([a-z]*)/i );
-  var flags = matches[ 3 ];
-
-  if ( flags && !/^(?!.*?(.).*?\1)[gmixXsuUAJ]+$/.test( flags ) ) {
-    return new RegExp( regexAsString );
-  }
-
-  var expression = matches[ 2 ];
-  return new RegExp( expression, flags );
-};
-
-module.exports = transformTools.makeFalafelTransform( 'console-filter', options, function ( node, transformOptions, done ) {
+var fnTransform = transformExclude( function ( node, transformOptions, done ) {
   var config = transformOptions.config || {};
   var filter = config.filter;
 
@@ -47,15 +29,12 @@ module.exports = transformTools.makeFalafelTransform( 'console-filter', options,
   if ( node.type === 'CallExpression' ) {
     if ( node.callee && node.callee.source().indexOf( 'console.' ) === 0 ) {
 
-
-
       var regex = parseRegExp( filter );
       var source = node.source();
 
       var matchOnFile = transformOptions.file.match( regex );
       var matchOnSource = source.match( regex );
       if ( matchOnSource || matchOnFile ) {
-        require( './console' ).log( '>>> keeping call on file:' + path.basename( transformOptions.file ), 'source: ' + source );
         done();
         return;
       }
@@ -65,3 +44,5 @@ module.exports = transformTools.makeFalafelTransform( 'console-filter', options,
   }
   done();
 } );
+
+module.exports = transformTools.makeFalafelTransform( 'console-filter', options, fnTransform );

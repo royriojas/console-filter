@@ -38,7 +38,8 @@
     "watch-spawn": "^1.0.3"
   },
   "dependencies": {
-    "browserify-transform-tools": "^1.4.2"
+    "browserify-transform-tools": "^1.4.2",
+    "browserify-transform-tools-exclude": "^0.1.1"
   },
   "bugs": {
     "url": "https://github.com/royriojas/console-filter/issues"
