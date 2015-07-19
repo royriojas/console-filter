@@ -2,10 +2,10 @@
 [![Build Status](http://img.shields.io/travis/royriojas/console-filter.svg?style=flat)](https://travis-ci.org/royriojas/console-filter)
 
 # console-filter
-> browserify transform to remove calls to console methods that do not match the given filter 
+> browserify transform to remove calls to console methods that do not match the given filter
 
 ## Overview
-This transform will turn this: 
+This transform will turn this:
 
 ```javascript
 //my-module.js
@@ -29,7 +29,7 @@ module.exports = someFunc;
 when configured with a filter like `my-prefix`.
 ```javascript
 var console-filter = require( 'console-filter' ).configure({
-  filter: 'my-prefix'
+  keep: 'my-prefix'
 });
 
 ```
@@ -44,7 +44,7 @@ npm i --save-dev console-filter
 
 ```
 var console-filter = require( 'console-filter' ).configure({
-  filter: 'my-prefix'
+  keep: 'my-prefix'
 });
 
 var b = browserify();

@@ -15,7 +15,7 @@ describe( 'console-filter', function () {
     var content = 'var fn = function () {};\nmodule.exports = fn;';
 
     transformTools.runTransform( transform.configure( {
-      filter: 'someMatch'
+      keep: 'someMatch'
     } ), dummyJsFile, {
       content: content
     }, function ( err, transformed ) {
@@ -35,7 +35,7 @@ describe( 'console-filter', function () {
     var content = '"use strict";\nvar fn = function () { \n  console.log("hello world");\n  console.log(\'my-prefix\', \'some other call here\');\n};\nmodule.exports = fn;';
 
     transformTools.runTransform( transform.configure( {
-      filter: 'my-prefix'
+      keep: 'my-prefix'
     } ), dummyJsFile, {
       content: content
     }, function ( err, transformed ) {

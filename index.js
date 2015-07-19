@@ -19,7 +19,7 @@ var parseRegExp = require( 'browserify-transform-tools-exclude/lib/parse-regex' 
 
 var fnTransform = transformExclude( function ( node, transformOptions, done ) {
   var config = transformOptions.config || {};
-  var filter = config.filter;
+  var filter = config.filter || config.keep;
 
   if ( !filter ) {
     done();
